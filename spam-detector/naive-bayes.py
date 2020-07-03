@@ -1,4 +1,5 @@
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import AdaBoostClassifier
 import pandas as pd
 import numpy as np
 
@@ -15,7 +16,11 @@ N = 100
 X_train, X_test = X[:-N,], X[-N:,]
 y_train, y_test = y[:-N,], y[-N:,]
 
-clf = MultinomialNB()
-clf.fit(X_train, y_train)
+clfs = {
+    "NB": MultinomialNB(),
+    "AdaBoost": AdaBoostClassifier(),
+}
 
-print("model score: ", clf.score(X_test, y_test))
+for name, clf in clfs.items():
+    clf.fit(X_train, y_train)
+    print(f"model score for {name}: {clf.score(X_test, y_test)}")
